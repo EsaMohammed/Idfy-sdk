@@ -1,0 +1,20 @@
+<resources>
+  <string name="app_name">Assignment 2</string>
+
+  <string-array name="type">
+    <item>Aadhar-Front</item>
+    <item>Aadhar-Back</item>
+    <item>Aadhar</item>
+    <item>PAN</item>
+    <item>Driving Licence</item>
+    <item>Face-Image</item>
+    <item>Passport-Front</item>
+    <item>Passport-Back</item>
+    <item>Voter</item>
+    <item>Voter-Front</item>
+    <item>Voter-Back</item>
+    <item>Document</item>
+  </string-array>
+
+
+</resources>

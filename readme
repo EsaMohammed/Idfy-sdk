@@ -1,1 +1,154 @@
 
+IDFY SDK Integration.
+
+1. To download the SDK, add the following to your project’s ‘build.gradle’ file:
+	
+	maven { url "https://mymavenrepo.com/repo/jeYsRLYFzkhy617P4O1I/" }
+	
+   In Gradle app dependency add
+	
+	implementation ‘com.idfy:rft:1.0.0’
+
+2. Camera permissions: You should ask your user for camera permissions when appropriate       
+   
+   within your app. The SDK requires this permission to work.
+	
+	Run time permission need to provide for this application.
+
+3. Before Start capturing documents. SDK need to initialize with accountId and token.
+
+	These credentials will be get from after successfull signup in IDFY account.
+	
+	In registered mail you will receive a PDF which is locked . Password will be 
+        received as a message to the registered phone number.
+	
+	In that pdf you will get accountId and Client id and Client secret key.
+	
+	Token can be generated as OAuth 2.0 with grant_type as client_credentials
+
+4. To initialize the SDK ====> RFTSdk.init(context, accountId, token, rftConfiguration) 
+
+	context ==> Current activity context
+
+	accountId ==> Provided after successful signup
+
+	token ==> Generate from OAuth 2.0 method
+
+	initCallback ==>  RftSdkInitCallback has 2 callback functions:
+
+                          1. onInitSuccess allows you to access the capture and upload functions of the SDK
+
+			  2. OnInitFailure returns an error which would be due to invalid token or account ID
+
+5. After SuccessFull initialize of SDK
+
+6. Three types of method available in the SDK.
+	1. CaptureDoc
+	2. CaptureFace
+	3. UploadImage
+
+7. CaptureDoc ===> This method will open camera for uploading documents 
+
+	RFTSdkInstance.CaptureDoc(context, docType, callback); 
+
+	To initialize this method need to pass three parameters
+	
+		1. context ==>	Current activity context
+
+		2. doc_type ==> Document type (eg. ind_aadhaar_front) that is to be captured 
+                                use the exact value from the type of documents table below
+	
+		3. callback ==> Instance of class/activity that implements RftImageCaptureCallback which contains 3 callback functions.
+
+				1. onCorrectCapture that returns bitmap image once image is captured and validated
+
+				2. onIncorrectCapture that returns bitmap image and reason for incorrect capture
+
+				3. onCaptureError that returns a RftException that contains the stacktrace of the error and the error.
+
+	Types of Documents.
+		
+		1.  AADHAAR_FRONT
+		
+		2.  AADHAAR_BACK
+		
+		3.  AADHAAR
+
+		4.  PAN
+		
+		5.  DRIVING_LICENSE
+
+		6.  PASSPORT_FRONT
+
+		7.  PASSPORT_BACK
+
+		8.  VOTER
+
+		9.  VOTER_FRONT
+
+		10. VOTER_BACK
+
+		11. DOCUMENT
+
+		
+
+	Incorrect Capture Insights:
+	
+		* The image is of some other document
+		* No document detected in the image
+		* The image is not readable
+		* No face detected in the image
+		* Multiple prominent faces detected in the image
+		* Face is too far from the camera
+		* Eyes are closed in the image
+
+8. CaptureFace ===> This method will open camera for capturing face detection.
+
+	RFTSdkInstance.CaptureFace(context, callback) 
+	
+	To initialize this method need to pass two parameters
+
+	1. context ==> Current activity context
+	
+	2. callback ==> Instance of class/activity that implements RftImageCaptureCallback which contains 3 callback functions.
+
+			1. onCorrectCapture that returns bitmap image once image is captured and validated
+
+			2. onIncorrectCapture that returns bitmap image and reason for incorrect capture
+
+			3. onCaptureError that returns a RftException that contains the stacktrace of the error and the error	
+	
+This method is used for detecting Face. Image will not get if the face is not detected in the Image.
+
+
+9. UploadImage ==> This method will upload image with EVE APIs
+	
+	This method will return the image link from EVE server
+	
+	RFTSdkInstance.UploadImage(accountId, token, groupId, docType, image)  
+
+        To initialize this method need to pass five parameters
+
+	1. accountId ==> account_id that will be fetched at the time of login using the token end-point*
+
+	2. token. ==> Authentication token that will be fetched at the time of login using the token end-point*
+
+	3. groupId ==>. Unique identifier to group checks for an individual profile  
+
+	4. docType  ==> Type of the DocType
+
+	5. image. ==> This will be the image object that you will get it from RftSdkCallbackInterface
+
+	6. callback ==> Callback for the success or failure of this function. The response contains a link that is a reference of the stored image.
+ 
+                        Eg: https://storage.googleapis.com/rftsdk/123
+
+
+10. If 403 error occurred then Token is expired. Then need to generate new Token from the server.
+
+
+
+Happy Coding!!!!!
+
+
+ 
